@@ -16,6 +16,9 @@ class SignInActivity : AppCompatActivity() {
     private val viewModel by lazy {
         ViewModelProvider(this)[SignInViewModel::class.java]
     }
+    private var emailCheck = false
+    private var nicknameCheck = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -23,15 +26,35 @@ class SignInActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         viewModel.nickname.observe(this){
             if (it.isEmpty()){
-                binding.textInputLayout.error = ""
+                binding.nicknameTextInputLayout.error = ""
                 binding.nextButton.isEnabled = false
+                nicknameCheck = false
             }else if(it.matches("^[a-zA-Z0-9]+\$".toRegex())&&it.length >= 4 && it.length <= 12){
-                binding.textInputLayout.error = ""
-                binding.nextButton.isEnabled= true
+                binding.nicknameTextInputLayout.error = ""
+                nicknameCheck = true
+                if (emailCheck) binding.nextButton.isEnabled= true
             }else{
-                binding.textInputLayout.error = "닉네임은 영문과 숫자를 포함한 4 ~ 12자로 입력하세요."
+                binding.nicknameTextInputLayout.error = "닉네임은 영문과 숫자를 포함한 4 ~ 12자로 입력하세요."
                 binding.nextButton.isEnabled = false
+                nicknameCheck = false
+            }
+        }
+        viewModel.email.observe(this){
+            val pattern = android.util.Patterns.EMAIL_ADDRESS
+            if (it.isEmpty()){
+                binding.emailTextInputLayout.error = ""
+                binding.nextButton.isEnabled = false
+                emailCheck = false
+            }else if (pattern.matcher(it).matches()){
+                binding.emailTextInputLayout.error = ""
+                emailCheck = true
+                if (nicknameCheck) binding.nextButton.isEnabled = true
+            }else{
+                binding.emailTextInputLayout.error = "이메일의 양식이 아닙니다. "
+                binding.nextButton.isEnabled = false
+                emailCheck = false
             }
         }
     }
+
 }
