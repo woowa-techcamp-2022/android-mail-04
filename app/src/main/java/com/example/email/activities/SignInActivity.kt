@@ -21,5 +21,17 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+        viewModel.nickname.observe(this){
+            if (it.isEmpty()){
+                binding.textInputLayout.error = ""
+                binding.nextButton.isEnabled = false
+            }else if(it.matches("^[a-zA-Z0-9]+\$".toRegex())&&it.length >= 4 && it.length <= 12){
+                binding.textInputLayout.error = ""
+                binding.nextButton.isEnabled= true
+            }else{
+                binding.textInputLayout.error = "닉네임은 영문과 숫자를 포함한 4 ~ 12자로 입력하세요."
+                binding.nextButton.isEnabled = false
+            }
+        }
     }
 }
