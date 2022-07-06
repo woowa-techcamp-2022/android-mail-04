@@ -1,11 +1,15 @@
 package com.example.email.adapters
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.email.R
 import com.example.email.data.Mail
 import com.example.email.databinding.MailItemBinding
+import kotlin.random.Random
 
 class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
 
@@ -14,8 +18,25 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
     class MailItemViewHolder(
         private val binding : MailItemBinding
     ) : RecyclerView.ViewHolder(binding.root){
+
+        private val colorList = intArrayOf(
+            0xffef9a9a.toInt(), 0xffffe082.toInt(), 0xffc5e1a5.toInt(),
+            0xff80cbc4.toInt(), 0xffb39ddb.toInt(), 0xff9fa8da.toInt(),
+            0xffffcc80.toInt(), 0xffce93d8.toInt()
+        )
+
         fun bind(item : Mail){
             binding.mail = item
+            val initial = item.sender.toCharArray()[0]
+            if (initial in 'a'..'z' || initial in 'A'..'Z') {
+                binding.profileImg.text = "${item.sender.toCharArray()[0]}"
+                binding.profileImg.setBackgroundResource(R.drawable.circle_shape)
+            }else{
+                binding.profileImg.text = ""
+                binding.profileImg.setBackgroundResource(R.drawable.ic_baseline_account_circle_24)
+            }
+            val random = colorList.random()
+            binding.profileImg.backgroundTintList = ColorStateList.valueOf(random)
         }
     }
 
