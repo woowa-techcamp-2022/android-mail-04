@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.email.R
 import com.example.email.adapters.MailAdapter
 import com.example.email.databinding.ActivityMainBinding
+import com.example.email.fragments.MailFragment
+import com.example.email.fragments.SettingFragment
 import com.example.email.viewmodels.MainViewModel
 import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
@@ -33,17 +35,28 @@ class MainActivity : AppCompatActivity() {
 
     inner class NavItemSelectedListener : NavigationBarView.OnItemSelectedListener{
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
+            val ft = supportFragmentManager.beginTransaction()
+            val frameId = binding.fragmentFrame.id
             when(item.itemId){
                 R.id.item_mail -> {
                     viewModel.navPosition.postValue(R.id.item_mail)
+                    binding.typeTextView.visibility = View.VISIBLE
+                    binding.mailRecyclerView.visibility = View.VISIBLE
+                    ft.remove(settingFrag)
                 }
                 R.id.item_setting -> {
                     viewModel.navPosition.postValue(R.id.item_setting)
+                    binding.typeTextView.visibility = View.GONE
+                    binding.mailRecyclerView.visibility = View.GONE
+                    ft.replace(frameId,settingFrag)
                 }
             }
+            ft.commit()
             return true
         }
     }
+
+    private val settingFrag = SettingFragment.newInstance()
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(

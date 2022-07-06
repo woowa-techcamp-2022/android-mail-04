@@ -10,7 +10,7 @@ class MainViewModel(app : Application) : AndroidViewModel(app) {
     val mails = mutableListOf<Mail>()
     var drawerNavPosition = 0 // navigation drawer position
     var navPosition = MutableLiveData(R.id.item_mail) // side, bottom nav position
-    val typeText = MutableLiveData("primary")
+    val typeText = MutableLiveData("Primary")
 
     fun getPrimaryMails() {
         mails.clear()
