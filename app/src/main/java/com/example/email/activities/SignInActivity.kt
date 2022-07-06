@@ -55,6 +55,10 @@ class SignInActivity : AppCompatActivity() {
                 emailCheck = false
             }
         }
+        binding.nextButton.setOnClickListener {
+            startActivity(MainActivity.getInstance(this,viewModel.nickname.value!!,viewModel.email.value!!))
+            finish()
+        }
     }
 
 }
