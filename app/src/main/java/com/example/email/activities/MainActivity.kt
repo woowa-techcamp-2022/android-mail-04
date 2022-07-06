@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
 import androidx.core.view.GravityCompat
@@ -15,6 +16,7 @@ import com.example.email.R
 import com.example.email.adapters.MailAdapter
 import com.example.email.databinding.ActivityMainBinding
 import com.example.email.viewmodels.MainViewModel
+import com.google.android.material.navigation.NavigationBarView
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +28,20 @@ class MainActivity : AppCompatActivity() {
             this.nickName = nickName
             this.email = email
             return Intent(context,MainActivity::class.java)
+        }
+    }
+
+    inner class NavItemSelectedListener : NavigationBarView.OnItemSelectedListener{
+        override fun onNavigationItemSelected(item: MenuItem): Boolean {
+            when(item.itemId){
+                R.id.item_mail -> {
+                    viewModel.navPosition.postValue(R.id.item_mail)
+                }
+                R.id.item_setting -> {
+                    viewModel.navPosition.postValue(R.id.item_setting)
+                }
+            }
+            return true
         }
     }
 
@@ -49,17 +65,29 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         val config = resources.configuration
+        val density = DisplayMetrics().density
+        val width = DisplayMetrics().widthPixels * density
 
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT){
-            binding.sideNavView.visibility = View.GONE
+            binding.sideNav.visibility = View.GONE
             binding.bottomNav.visibility = View.VISIBLE
-        } else if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            binding.sideNavView.visibility = View.VISIBLE
+        } else if (width > 600 ||config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            binding.sideNav.visibility = View.VISIBLE
             binding.bottomNav.visibility = View.GONE
         }
 
         initAppBar()
         initRecyclerView()
+        initNavi()
+    }
+
+    private fun initNavi() {
+        binding.bottomNav.setOnItemSelectedListener(NavItemSelectedListener())
+        binding.sideNav.setOnItemSelectedListener(NavItemSelectedListener())
+        viewModel.navPosition.observe(this){
+            binding.bottomNav.selectedItemId = it
+            binding.sideNav.selectedItemId = it
+        }
     }
 
     private fun initAppBar(){
@@ -69,17 +97,17 @@ class MainActivity : AppCompatActivity() {
 
         binding.drawerNavView.setNavigationItemSelectedListener{
             when(it.itemId){
-                R.id.item1 -> {
+                R.id.item_primary -> {
                     viewModel.drawerNavPosition = 0
                     viewModel.typeText.postValue("Primary")
                     viewModel.getPrimaryMails()
                 }
-                R.id.item2 ->{
+                R.id.item_social ->{
                     viewModel.drawerNavPosition = 1
                     viewModel.typeText.postValue("Social")
                     viewModel.getSocialMails()
                 }
-                R.id.item3 -> {
+                R.id.item_promotions -> {
                     viewModel.drawerNavPosition = 2
                     viewModel.typeText.postValue("Promotion")
                     viewModel.getPromotionMails()
@@ -87,7 +115,8 @@ class MainActivity : AppCompatActivity() {
                 else -> {}
             }
             mailAdapter.updateList(viewModel.mails)
-            return@setNavigationItemSelectedListener false
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            return@setNavigationItemSelectedListener true
         }
     }
 
