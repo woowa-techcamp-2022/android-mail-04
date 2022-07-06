@@ -23,7 +23,20 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
 
+        configurationCheck()
+        nickNameObserve()
+        emailObserve()
+
+        binding.nextButton.setOnClickListener {
+            startActivity(MainActivity.getInstance(this,viewModel.nickname.value!!,viewModel.email.value!!))
+            finish()
+        }
+    }
+
+    private fun configurationCheck(){
         val config = resources.configuration
 
         if (config.orientation == Configuration.ORIENTATION_PORTRAIT){
@@ -31,15 +44,15 @@ class SignInActivity : AppCompatActivity() {
         } else if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
             binding.topLinearlayout.visibility = View.GONE
         }
+    }
 
-        binding.lifecycleOwner = this
-        binding.viewModel = viewModel
+    private fun nickNameObserve(){
         viewModel.nickname.observe(this){
             if (it.isEmpty()){
                 binding.nicknameTextInputLayout.error = ""
                 binding.nextButton.isEnabled = false
                 nicknameCheck = false
-            }else if(it.matches("^[a-zA-Z0-9]+\$".toRegex())&&it.length >= 4 && it.length <= 12){
+            }else if(it.matches("^[a-z][a-z\\d]{4,12}\$".toRegex())){
                 binding.nicknameTextInputLayout.error = ""
                 nicknameCheck = true
                 if (emailCheck) binding.nextButton.isEnabled= true
@@ -49,6 +62,9 @@ class SignInActivity : AppCompatActivity() {
                 nicknameCheck = false
             }
         }
+    }
+
+    private fun emailObserve(){
         viewModel.email.observe(this){
             val pattern = android.util.Patterns.EMAIL_ADDRESS
             if (it.isEmpty()){
@@ -64,10 +80,6 @@ class SignInActivity : AppCompatActivity() {
                 binding.nextButton.isEnabled = false
                 emailCheck = false
             }
-        }
-        binding.nextButton.setOnClickListener {
-            startActivity(MainActivity.getInstance(this,viewModel.nickname.value!!,viewModel.email.value!!))
-            finish()
         }
     }
 

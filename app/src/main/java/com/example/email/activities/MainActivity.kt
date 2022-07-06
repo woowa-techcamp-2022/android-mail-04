@@ -71,10 +71,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
+        configurationCheck()
+        initAppBar()
+        initRecyclerView()
+        initNavi()
+    }
+
+    private fun configurationCheck(){
         val config = resources.configuration
         val density = DisplayMetrics().density
         val width = DisplayMetrics().widthPixels * density
@@ -86,10 +92,6 @@ class MainActivity : AppCompatActivity() {
             binding.sideNav.visibility = View.VISIBLE
             binding.bottomNav.visibility = View.GONE
         }
-
-        initAppBar()
-        initRecyclerView()
-        initNavi()
     }
 
     private fun initNavi() {
@@ -108,23 +110,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.drawerNavView.setNavigationItemSelectedListener{
             when(it.itemId){
-                R.id.item_primary -> {
-                    viewModel.drawerNavPosition = 0
-                    viewModel.typeText.postValue("Primary")
-                    viewModel.getPrimaryMails()
-                }
-                R.id.item_social ->{
-                    viewModel.drawerNavPosition = 1
-                    viewModel.typeText.postValue("Social")
-                    viewModel.getSocialMails()
-                }
-                R.id.item_promotions -> {
-                    viewModel.drawerNavPosition = 2
-                    viewModel.typeText.postValue("Promotion")
-                    viewModel.getPromotionMails()
-                }
-                else -> {}
+                R.id.item_primary -> viewModel.drawerNavPosition = 0
+                R.id.item_social ->  viewModel.drawerNavPosition = 1
+                R.id.item_promotions -> viewModel.drawerNavPosition = 2
             }
+            viewModel.getMails()
             mailAdapter.updateList(viewModel.mails)
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
@@ -134,11 +124,7 @@ class MainActivity : AppCompatActivity() {
     private fun initRecyclerView(){
         binding.mailRecyclerView.adapter = mailAdapter
         binding.mailRecyclerView.layoutManager = LinearLayoutManager(this)
-        when(viewModel.drawerNavPosition){
-            0 -> viewModel.getPrimaryMails()
-            1 -> viewModel.getSocialMails()
-            2 -> viewModel.getPromotionMails()
-        }
+        viewModel.getMails()
         mailAdapter.updateList(viewModel.mails)
     }
 
@@ -151,16 +137,17 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
     private var lastTimeBackPressed  : Long = System.currentTimeMillis()
+
     override fun onBackPressed() {
         if (System.currentTimeMillis() - lastTimeBackPressed < 1500L){
             finish()
         }else {
-            viewModel.navPosition.postValue(R.id.item_mail)
+            viewModel.navPosition.value = R.id.item_mail
             viewModel.drawerNavPosition = 0
-            viewModel.getPrimaryMails()
+            viewModel.getMails()
             mailAdapter.updateList(viewModel.mails)
+            lastTimeBackPressed = System.currentTimeMillis()
         }
     }
 }
