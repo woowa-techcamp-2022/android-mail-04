@@ -1,7 +1,9 @@
 package com.example.email.activities
 
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.email.R
@@ -21,7 +23,15 @@ class SignInActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_in)
+
+        val config = resources.configuration
+
+        if (config.orientation == Configuration.ORIENTATION_PORTRAIT){
+            binding.topLinearlayout.visibility = View.VISIBLE
+        } else if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            binding.topLinearlayout.visibility = View.GONE
+        }
+
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         viewModel.nickname.observe(this){
