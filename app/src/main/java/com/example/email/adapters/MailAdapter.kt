@@ -19,6 +19,12 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
         }
     }
 
+    fun updateList(mails : List<Mail>){
+        mailList.clear()
+        mailList.addAll(mails)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MailItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.mail_item,parent,false)
         val binding = MailItemBinding.bind(view)
