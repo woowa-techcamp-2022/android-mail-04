@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.email.R
 import com.example.email.adapters.MailAdapter
 import com.example.email.databinding.ActivityMainBinding
-import com.example.email.fragments.MailFragment
 import com.example.email.fragments.SettingFragment
 import com.example.email.viewmodels.MainViewModel
 import com.google.android.material.navigation.NavigationBarView
-import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
