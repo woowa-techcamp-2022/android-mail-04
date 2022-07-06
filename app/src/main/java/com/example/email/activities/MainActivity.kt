@@ -152,5 +152,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
+    private var lastTimeBackPressed  : Long = System.currentTimeMillis()
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - lastTimeBackPressed < 1500L){
+            finish()
+        }else {
+            viewModel.navPosition.postValue(R.id.item_mail)
+            viewModel.drawerNavPosition = 0
+            viewModel.getPrimaryMails()
+            mailAdapter.updateList(viewModel.mails)
+        }
+    }
 }
