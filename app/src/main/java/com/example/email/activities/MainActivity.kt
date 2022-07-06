@@ -6,10 +6,16 @@ import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.email.R
+import com.example.email.adapters.MailAdapter
 import com.example.email.databinding.ActivityMainBinding
+import com.example.email.viewmodels.MainViewModel
+import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,40 +36,78 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private val viewModel by lazy {
+        ViewModelProvider(this)[MainViewModel::class.java]
+    }
+
+    private val mailAdapter = MailAdapter()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         binding.lifecycleOwner = this
+        binding.viewModel = viewModel
+
+        val config = resources.configuration
+
+        if (config.orientation == Configuration.ORIENTATION_PORTRAIT){
+            binding.sideNavView.visibility = View.GONE
+            binding.bottomNav.visibility = View.VISIBLE
+        } else if (config.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            binding.sideNavView.visibility = View.VISIBLE
+            binding.bottomNav.visibility = View.GONE
+        }
 
         initAppBar()
+        initRecyclerView()
     }
-
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        /*if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT){
-            //todo. 세로 모드 action
-        } else if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
-            //todo. 가로 모드 action
-        }*/
-    }
-
 
     private fun initAppBar(){
         setSupportActionBar(binding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_baseline_menu_30)
 
+        binding.drawerNavView.setNavigationItemSelectedListener{
+            when(it.itemId){
+                R.id.item1 -> {
+                    viewModel.drawerNavPosition = 0
+                    viewModel.typeText.postValue("Primary")
+                    viewModel.getPrimaryMails()
+                }
+                R.id.item2 ->{
+                    viewModel.drawerNavPosition = 1
+                    viewModel.typeText.postValue("Social")
+                    viewModel.getSocialMails()
+                }
+                R.id.item3 -> {
+                    viewModel.drawerNavPosition = 2
+                    viewModel.typeText.postValue("Promotion")
+                    viewModel.getPromotionMails()
+                }
+                else -> {}
+            }
+            mailAdapter.updateList(viewModel.mails)
+            return@setNavigationItemSelectedListener false
+        }
     }
 
+    private fun initRecyclerView(){
+        binding.mailRecyclerView.adapter = mailAdapter
+        binding.mailRecyclerView.layoutManager = LinearLayoutManager(this)
+        when(viewModel.drawerNavPosition){
+            0 -> viewModel.getPrimaryMails()
+            1 -> viewModel.getSocialMails()
+            2 -> viewModel.getPromotionMails()
+        }
+        mailAdapter.updateList(viewModel.mails)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when(item.itemId) {
             android.R.id.home -> {
                 binding.drawerLayout.openDrawer(GravityCompat.START)
             }
         }
-
         return super.onOptionsItemSelected(item)
     }
 
