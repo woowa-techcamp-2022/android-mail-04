@@ -21,7 +21,6 @@ class MainViewModel(app : Application) : AndroidViewModel(app) {
             1 -> {
                 getSocialMails()
                 typeText.value = "Social"
-
             }
             2 -> {
                 getPromotionMails()
@@ -32,25 +31,34 @@ class MainViewModel(app : Application) : AndroidViewModel(app) {
 
     private fun getPrimaryMails() {
         mails.clear()
-        (1..5).forEach {
-            mails.add(Mail("","Sender$it","primary$it","primaryprimaryprimaryprimaryprimary","primary"))
+        (1..10).forEach {
+            var senderName = ""
+            repeat(5){
+                senderName += ('!'..'~').random()
+            }
+            mails.add(Mail("",senderName,"primary$it","primaryprimaryprimaryprimaryprimary","primary"))
         }
-        mails.add(Mail("","철수","ㅇㅇㅇ","primaryprimaryprimaryprimaryprimary","primary"))
-        mails.add(Mail("","영희","ㅇㅇㅇ","primaryprimaryprimaryprimaryprimary","primary"))
-        mails.add(Mail("","민수","ㅇㅇㅇ","primaryprimaryprimaryprimaryprimary","primary"))
     }
 
     private fun getSocialMails() {
         mails.clear()
-        (1..5).forEach {
-            mails.add(Mail("","Sender$it","social$it","socialsocialsocialsocialsocialsocial","social"))
+        (1..10).forEach {
+            var senderName = ""
+            repeat(5){
+                senderName += ('!'..'~').random()
+            }
+            mails.add(Mail("",senderName,"social$it","socialsocialsocialsocialsocialsocial","social"))
         }
     }
 
     private fun getPromotionMails() {
         mails.clear()
-        (1..5).forEach {
-            mails.add(Mail("","Sender$it","promotions$it","promotionspromotionspromotionspromotionspromotions","promotions"))
+        (1..10).forEach {
+            var senderName = ""
+            repeat(5){
+                senderName += ('!'..'~').random()
+            }
+            mails.add(Mail("",senderName,"promotions$it","promotionspromotionspromotionspromotionspromotions","promotions"))
         }
     }
 }
