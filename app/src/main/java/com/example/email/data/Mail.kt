@@ -4,5 +4,6 @@ data class Mail(
     val profileImgPath : String,
     val sender : String,
     val title : String,
-    val content : String
+    val content : String,
+    val type : String
 )
