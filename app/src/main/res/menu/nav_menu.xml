@@ -3,9 +3,9 @@
     <item
         android:id="@+id/item_mail"
         android:icon="@drawable/ic_baseline_mail_outline_30"
-        android:title="Mail"/>
+        android:title="@string/mail"/>
     <item
         android:id="@+id/item_setting"
         android:icon="@drawable/ic_outline_settings_30"
-        android:title="Setting"/>
+        android:title="@string/setting"/>
 </menu>
