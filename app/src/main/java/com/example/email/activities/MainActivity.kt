@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity() {
     /**
      * 전환할 fragments
      */
-    private val settingFrag  = SettingFragment.newInstance()
-    private val mailFrag  = MailFragment.newInstance()
+    private val settingFrag  = SettingFragment()
+    private val mailFrag  = MailFragment()
 
     /**
      * binding, 호출 시 초기화
@@ -178,14 +178,14 @@ class MainActivity : AppCompatActivity() {
      * 그렇지 않다면 선택 값을 모두 0으로 설정 -> primary mail 화면으로 전환
      */
     override fun onBackPressed() {
-        if (App.mailType.value!! == 0 && viewModel.navPosition.value == R.id.item_mail){
-            finish()
-        }else {
+        if (!(App.mailType.value!! == 0 && viewModel.navPosition.value == R.id.item_mail)){
             viewModel.navPosition.postValue(R.id.item_mail)
             if (App.mailType.value!! != 0){
                 App.mailType.value = 0
                 binding.drawerNavView.setCheckedItem(R.id.item_primary)
             }
+            return
         }
+        super.onBackPressed()
     }
 }

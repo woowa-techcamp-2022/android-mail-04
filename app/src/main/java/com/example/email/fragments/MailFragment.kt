@@ -64,16 +64,10 @@ class MailFragment : Fragment() {
     private fun initRecyclerView(){
         binding.mailRecyclerView.adapter = mailAdapter
         binding.mailRecyclerView.layoutManager = LinearLayoutManager(context)
+
         App.mailType.observe(viewLifecycleOwner){
             viewModel.getMails()
             mailAdapter.updateList(viewModel.mails)
         }
-    }
-
-    /**
-     * instance 생성
-     */
-    companion object {
-        fun newInstance() = MailFragment()
     }
 }
