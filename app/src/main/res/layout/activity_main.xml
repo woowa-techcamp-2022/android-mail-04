@@ -27,7 +27,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/title"/>
-            <TextView
+            <!--<TextView
                 android:id="@+id/type_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/type_textView"
                 app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-                tools:listitem="@layout/mail_item"/>
+                tools:listitem="@layout/mail_item"/>-->
             <FrameLayout
                 android:id="@+id/fragment_frame"
                 android:layout_width="0dp"

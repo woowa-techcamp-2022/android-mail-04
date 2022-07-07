@@ -9,4 +9,6 @@
     <string name="email_ko">이메일</string>
     <string name="next_btn_text">next</string>
     <string name="nickName_ko">닉네임</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
