@@ -80,7 +80,7 @@ class MainViewModel(app : Application) : AndroidViewModel(app) {
     private fun getPromotionMails() {
         mails.clear()
         if (promotionMails.isNotEmpty()){
-            mails.addAll(socialMails)
+            mails.addAll(promotionMails)
             return
         }
         var id = 0L + 40L
