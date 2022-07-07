@@ -8,10 +8,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.example.email.R
 import com.example.email.databinding.ActivitySignInBinding
+import com.example.email.navigator.SignInNavigator
 import com.example.email.viewmodels.SignInViewModel
 import java.lang.ref.WeakReference
 
-class SignInActivity : AppCompatActivity(), SignInNavigator{
+class SignInActivity : AppCompatActivity(), SignInNavigator {
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivitySignInBinding>(this, R.layout.activity_sign_in)
