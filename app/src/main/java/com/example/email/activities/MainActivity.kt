@@ -142,10 +142,8 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private var lastTimeBackPressed  : Long = System.currentTimeMillis()
-
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - lastTimeBackPressed < 1500L){
+        if (viewModel.navPosition.value!! == 0 && viewModel.drawerNavPosition == 0){
             finish()
         }else {
             viewModel.navPosition.postValue(R.id.item_mail)
@@ -155,8 +153,6 @@ class MainActivity : AppCompatActivity() {
                 mailAdapter.updateList(viewModel.mails)
                 binding.drawerNavView.setCheckedItem(R.id.item_primary)
             }
-            lastTimeBackPressed = System.currentTimeMillis()
-            Toast.makeText(this,"뒤로가기를 한 번 더 눌려 종료합니다.",Toast.LENGTH_SHORT).show()
         }
     }
 }

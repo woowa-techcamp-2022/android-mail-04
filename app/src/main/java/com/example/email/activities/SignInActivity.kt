@@ -83,7 +83,7 @@ class SignInActivity : AppCompatActivity(), SignInNavigator {
     }
 
     override fun startMainActivity(nickName : String, email : String) {
-        startActivity(MainActivity.getInstance(this,viewModel.nickname.value!!,viewModel.email.value!!))
+        startActivity(MainActivity.getInstance(this,nickName, email))
         finish()
     }
 
