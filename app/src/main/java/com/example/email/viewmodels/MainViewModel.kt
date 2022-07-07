@@ -12,6 +12,10 @@ class MainViewModel(app : Application) : AndroidViewModel(app) {
     var navPosition = MutableLiveData(R.id.item_mail) // side, bottom nav position
     val typeText = MutableLiveData("Primary")
 
+    private val primaryMails = mutableListOf<Mail>()
+    private val socialMails = mutableListOf<Mail>()
+    private val promotionMails = mutableListOf<Mail>()
+
     fun getMails(){
         when(drawerNavPosition){
             0 -> {
@@ -31,34 +35,83 @@ class MainViewModel(app : Application) : AndroidViewModel(app) {
 
     private fun getPrimaryMails() {
         mails.clear()
-        (1..10).forEach {
-            var senderName = ""
-            repeat(5){
-                senderName += ('!'..'~').random()
-            }
-            mails.add(Mail("",senderName,"primary$it","primaryprimaryprimaryprimaryprimary","primary"))
+        if (primaryMails.isNotEmpty()){
+            mails.addAll(primaryMails)
+            return
         }
+        var id = 0L
+        repeat(2){
+            mails.add(Mail(++id,makeEnglishName(),"Primary$id","PrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimary","Primary"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeKoName(),"Primary$id","PrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimary","Primary"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeEnglishName(),"Primary$id","PrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimary","Primary"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeKoName(),"Primary$id","PrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimaryPrimary","Primary"))
+        }
+        primaryMails.addAll(mails)
     }
 
     private fun getSocialMails() {
         mails.clear()
-        (1..10).forEach {
-            var senderName = ""
-            repeat(5){
-                senderName += ('!'..'~').random()
-            }
-            mails.add(Mail("",senderName,"social$it","socialsocialsocialsocialsocialsocial","social"))
+        if (socialMails.isNotEmpty()){
+            mails.addAll(socialMails)
+            return
         }
+        var id = 0L + 20L
+        repeat(2){
+            mails.add(Mail(++id,makeEnglishName(),"Social$id","SocialSocialSocialSocialSocialSocialSocialSocialSocialSocialSocial","Social"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeKoName(),"Social$id","SocialSocialSocialSocialSocialSocialSocialSocialSocialSocialSocial","Social"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeEnglishName(),"Social$id","SocialSocialSocialSocialSocialSocialSocialSocialSocialSocialSocial","Social"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeKoName(),"Social$id","SocialSocialSocialSocialSocialSocialSocialSocialSocialSocialSocial","Social"))
+        }
+        socialMails.addAll(mails)
     }
 
     private fun getPromotionMails() {
         mails.clear()
-        (1..10).forEach {
-            var senderName = ""
-            repeat(5){
-                senderName += ('!'..'~').random()
-            }
-            mails.add(Mail("",senderName,"promotions$it","promotionspromotionspromotionspromotionspromotions","promotions"))
+        if (promotionMails.isNotEmpty()){
+            mails.addAll(socialMails)
+            return
         }
+        var id = 0L + 40L
+        repeat(2){
+            mails.add(Mail(++id,makeEnglishName(),"Promotions$id","PromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotions","Promotions"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeKoName(),"Promotions$id","PromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotions","Promotions"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeEnglishName(),"Promotions$id","PromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotions","Promotions"))
+        }
+        repeat(2){
+            mails.add(Mail(++id,makeKoName(),"Promotions$id","PromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotionsPromotions","Promotions"))
+        }
+        promotionMails.addAll(mails)
+    }
+
+
+    private fun makeEnglishName() : String {
+        var name = "${('A'..'Z').random()}"
+        repeat(5){
+            name += ('a'..'z').random()
+        }
+        return name
+    }
+    private fun makeKoName() : String{
+        var name = ""
+        repeat(3){
+            name += ('가'..'힣').random()
+        }
+        return name
     }
 }
