@@ -5,5 +5,6 @@ data class Mail(
     val sender : String,
     val title : String,
     val content : String,
-    val type : String
+    val type : String,
+    val sDate : String = "2022-07-07"
 )
