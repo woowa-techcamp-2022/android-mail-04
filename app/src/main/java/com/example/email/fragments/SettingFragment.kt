@@ -14,12 +14,20 @@ import com.example.email.viewmodels.SettingViewModel
 
 class SettingFragment : Fragment() {
 
-    private lateinit var binding : FragmentSettingBinding
-
+    /**
+     * viewModel, 호출 시 초기화
+     */
     private val viewModel by lazy {
         ViewModelProvider(this)[SettingViewModel::class.java]
     }
+    /**
+     * binding, onCreateView 에서 초기화
+     */
+    private lateinit var binding : FragmentSettingBinding
 
+    /**
+     * binding 초기화
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,6 +36,9 @@ class SettingFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * 싱글톤으로 저장되어 있는 이메일과 닉네임 정보를 viewModel 에 입력
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -38,6 +49,9 @@ class SettingFragment : Fragment() {
         viewModel.nicknameText.value = "NickName : ${MainActivity.nickName }"
     }
 
+    /**
+     * instance 생성
+     */
     companion object {
         fun newInstance() = SettingFragment()
     }
