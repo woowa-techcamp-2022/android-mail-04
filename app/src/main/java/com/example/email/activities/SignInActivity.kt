@@ -52,7 +52,7 @@ class SignInActivity : AppCompatActivity() {
                 binding.nicknameTextInputLayout.error = ""
                 binding.nextButton.isEnabled = false
                 nicknameCheck = false
-            }else if(it.matches("^[a-z][a-z\\d]{4,12}\$".toRegex())){
+            }else if(it.matches("^[a-z][a-z\\d]{3,11}\$".toRegex())){
                 binding.nicknameTextInputLayout.error = ""
                 nicknameCheck = true
                 if (emailCheck) binding.nextButton.isEnabled= true
