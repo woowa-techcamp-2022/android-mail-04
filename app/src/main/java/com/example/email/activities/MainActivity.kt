@@ -117,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             }
             viewModel.getMails()
             mailAdapter.updateList(viewModel.mails)
+            viewModel.navPosition.postValue(R.id.item_mail)
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
         }
