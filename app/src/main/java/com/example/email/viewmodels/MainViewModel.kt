@@ -6,5 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.example.email.R
 
 class MainViewModel(app : Application) : AndroidViewModel(app) {
-    var navPosition = MutableLiveData(R.id.item_mail) // side, bottom nav position
+    /**
+     * BottomNavigationView, NavigationRailView 의 선택 아이템 위치 정보
+     */
+    var navPosition = MutableLiveData(R.id.item_mail)
 }
