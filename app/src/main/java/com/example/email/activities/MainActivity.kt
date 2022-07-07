@@ -46,14 +46,18 @@ class MainActivity : AppCompatActivity() {
             val frameId = binding.fragmentFrame.id
             when(item.itemId){
                 R.id.item_mail -> {
-                    if (viewModel.navPosition.value!! != item.itemId)
+                    if (viewModel.navPosition.value!! != item.itemId) {
                         viewModel.navPosition.postValue(R.id.item_mail)
-                    ft.replace(frameId, mailFrag)
+                        ft.replace(frameId, mailFrag)
+                    }
+                    if(ft.isEmpty)
+                        ft.replace(frameId, mailFrag)
                 }
                 R.id.item_setting -> {
-                    if (viewModel.navPosition.value!! != item.itemId)
+                    if (viewModel.navPosition.value!! != item.itemId) {
                         viewModel.navPosition.postValue(R.id.item_setting)
-                    ft.replace(frameId, settingFrag)
+                        ft.replace(frameId, settingFrag)
+                    }
                 }
             }
             ft.commit()
@@ -179,7 +183,7 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onBackPressed() {
         if (!(App.mailType.value!! == 0 && viewModel.navPosition.value == R.id.item_mail)){
-            viewModel.navPosition.postValue(R.id.item_mail)
+            viewModel.navPosition.value = R.id.item_mail
             if (App.mailType.value!! != 0){
                 App.mailType.value = 0
                 binding.drawerNavView.setCheckedItem(R.id.item_primary)
