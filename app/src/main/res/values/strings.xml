@@ -9,6 +9,6 @@
     <string name="email_ko">이메일</string>
     <string name="next_btn_text">next</string>
     <string name="nickName_ko">닉네임</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nickName_input_error_msg">닉네임은 영문과 숫자를 포함한 4 ~ 12자로 입력하세요.</string>
+    <string name="email_input_error_msg">이메일의 양식이 아닙니다.</string>
 </resources>
