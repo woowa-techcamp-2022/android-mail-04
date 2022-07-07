@@ -70,8 +70,7 @@ class SignInActivity : AppCompatActivity(), SignInNavigator {
      * 닉네임 관찰,
      * 입력 칸의 닉네임이 규칙에 부합하는지 관찰한다.
      * 닉네임의 규칙
-     * 1. 닉네임은 알파벳으로 시작한다.
-     * 2. 닉네임은 알파벳 또는 숫자로 이루어진 4 ~ 12 자의 문자열이다.
+     * 1. 닉네임은 알파벳과 숫자를 결합한 4 ~ 12 자리의 문자열이다.
      *
      * - 닉네임이 비어있다면 error Text 는 없지만 버튼은 비활성화 된다. 당연히 규칙에 부합하지 않는다.
      * - 닉네임이 규칙에 부합한다면 error Text 가 사라지고 nicknameCheck 를 true 로 변경,
@@ -84,7 +83,7 @@ class SignInActivity : AppCompatActivity(), SignInNavigator {
                 binding.nicknameTextInputLayout.error = ""
                 binding.nextButton.isEnabled = false
                 nicknameCheck = false
-            }else if(it.matches("^[a-z|A-Z][a-z|A-Z\\d]{3,11}\$".toRegex())){
+            }else if(nickNameChecker(it)){
                 binding.nicknameTextInputLayout.error = ""
                 nicknameCheck = true
                 if (emailCheck) binding.nextButton.isEnabled= true
@@ -94,6 +93,26 @@ class SignInActivity : AppCompatActivity(), SignInNavigator {
                 nicknameCheck = false
             }
         }
+    }
+
+    /**
+     * 닉네임 규칙 확인 함수
+     * 알파벳과 숫자를 결합한 4 ~ 12 자리의 문자열인지 확인한다.
+     */
+    private fun nickNameChecker(nickName: String) : Boolean{
+        var alphabet = 0
+        var num = 0
+        if (nickName.length in 4..12){
+            for(c in nickName){
+                when (c) {
+                    in 'a'..'z', in 'A'..'Z' -> alphabet++
+                    in '0'..'9' -> num++
+                    else -> return false
+                }
+            }
+            return !(num == 0 || alphabet ==0)
+        }
+        return false
     }
 
     /**
