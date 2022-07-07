@@ -8,14 +8,13 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.email.App
 import com.example.email.R
-import com.example.email.adapters.MailAdapter
 import com.example.email.databinding.ActivityMainBinding
+import com.example.email.fragments.MailFragment
 import com.example.email.fragments.SettingFragment
 import com.example.email.viewmodels.MainViewModel
 import com.google.android.material.navigation.NavigationBarView
@@ -40,16 +39,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.item_mail -> {
                     if (viewModel.navPosition.value!! != item.itemId)
                         viewModel.navPosition.postValue(R.id.item_mail)
-                    binding.typeTextView.visibility = View.VISIBLE
-                    binding.mailRecyclerView.visibility = View.VISIBLE
-                    ft.remove(settingFrag)
+                    ft.replace(frameId, mailFrag)
                 }
                 R.id.item_setting -> {
                     if (viewModel.navPosition.value!! != item.itemId)
                         viewModel.navPosition.postValue(R.id.item_mail)
                     viewModel.navPosition.postValue(R.id.item_setting)
-                    binding.typeTextView.visibility = View.GONE
-                    binding.mailRecyclerView.visibility = View.GONE
                     ft.replace(frameId,settingFrag)
                 }
             }
@@ -58,7 +53,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private val settingFrag = SettingFragment.newInstance()
+    private val settingFrag  = SettingFragment.newInstance()
+    private val mailFrag  = MailFragment.newInstance()
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivityMainBinding>(
@@ -71,16 +67,12 @@ class MainActivity : AppCompatActivity() {
         ViewModelProvider(this)[MainViewModel::class.java]
     }
 
-    private val mailAdapter = MailAdapter()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
-
         configurationCheck()
         initAppBar()
-        initRecyclerView()
         initNavi()
     }
 
@@ -114,23 +106,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.drawerNavView.setNavigationItemSelectedListener{
             when(it.itemId){
-                R.id.item_primary -> viewModel.drawerNavPosition = 0
-                R.id.item_social ->  viewModel.drawerNavPosition = 1
-                R.id.item_promotions -> viewModel.drawerNavPosition = 2
+                R.id.item_primary -> App.mailType.postValue(0)
+                R.id.item_social -> App.mailType.postValue(1)
+                R.id.item_promotions -> App.mailType.postValue(2)
             }
-            viewModel.getMails()
-            mailAdapter.updateList(viewModel.mails)
             viewModel.navPosition.postValue(R.id.item_mail)
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
         }
-    }
-
-    private fun initRecyclerView(){
-        binding.mailRecyclerView.adapter = mailAdapter
-        binding.mailRecyclerView.layoutManager = LinearLayoutManager(this)
-        viewModel.getMails()
-        mailAdapter.updateList(viewModel.mails)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -142,21 +125,15 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private var lastTimeBackPressed  : Long = System.currentTimeMillis()
-
     override fun onBackPressed() {
-        if (System.currentTimeMillis() - lastTimeBackPressed < 1500L){
+        if (App.mailType.value!! == 0 && viewModel.navPosition.value == R.id.item_mail){
             finish()
         }else {
             viewModel.navPosition.postValue(R.id.item_mail)
-            if (viewModel.drawerNavPosition != 0){
-                viewModel.drawerNavPosition = 0
-                viewModel.getMails()
-                mailAdapter.updateList(viewModel.mails)
+            if (App.mailType.value!! != 0){
+                App.mailType.value = 0
                 binding.drawerNavView.setCheckedItem(R.id.item_primary)
             }
-            lastTimeBackPressed = System.currentTimeMillis()
-            Toast.makeText(this,"뒤로가기를 한 번 더 눌려 종료합니다.",Toast.LENGTH_SHORT).show()
         }
     }
 }
