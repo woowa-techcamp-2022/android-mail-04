@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * 화면 정보 확인
-     * 화면의 가로 pixel 값을 측정 density 를 곱해 dp 값으로 변환
+     * 화면의 가로 pixel 값을 측정 density 로 나누어 dp 값으로 변환
      * 가로, 세로 모드를 확인
      * 가로 길이가 600dp 보다 크거나 가로 모드일 경우
      *  - BottomNavigationView 를 지우고 NavigationRailView 을 화면에 나타낸다.
@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
      */
     private fun configurationCheck(){
         val config = resources.configuration
-        val density = DisplayMetrics().density
-        val width = DisplayMetrics().widthPixels * density
+        val density = resources.displayMetrics.density
+        val width = resources.displayMetrics.widthPixels / density
 
         if (width > 600 ||config.orientation == Configuration.ORIENTATION_LANDSCAPE){
             binding.sideNav.visibility = View.VISIBLE
