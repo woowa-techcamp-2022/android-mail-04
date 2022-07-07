@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.email.R
 import com.example.email.data.Mail
@@ -12,8 +13,6 @@ import com.example.email.databinding.MailItemBinding
 import kotlin.random.Random
 
 class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
-
-    private val mailList = mutableListOf<Mail>()
 
     class MailItemViewHolder(
         private val binding : MailItemBinding
@@ -40,10 +39,34 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
         }
     }
 
+    class DiffUtilCallBack(
+        private val oldList : List<Mail>,
+        private val newList : List<Mail>
+    ):DiffUtil.Callback(){
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return  oldList[oldItemPosition] == newList[newItemPosition]
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return  oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
+
+    private val mailList = mutableListOf<Mail>()
+
     fun updateList(mails : List<Mail>){
-        mailList.clear()
+        /*mailList.clear()
         mailList.addAll(mails)
-        notifyDataSetChanged()
+        notifyDataSetChanged()*/
+        val diffUtilCallBack = DiffUtilCallBack(mailList,mails)
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallBack)
+        mailList.run {
+            clear()
+            addAll(mails)
+            diffResult.dispatchUpdatesTo(this@MailAdapter)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MailItemViewHolder {
