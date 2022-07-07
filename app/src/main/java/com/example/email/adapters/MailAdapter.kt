@@ -1,19 +1,15 @@
 package com.example.email.adapters
 
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.email.R
 import com.example.email.data.Mail
 import com.example.email.databinding.MailItemBinding
-import kotlin.random.Random
 
 class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
-
-    private val mailList = mutableListOf<Mail>()
 
     class MailItemViewHolder(
         private val binding : MailItemBinding
@@ -31,7 +27,7 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
             if (initial in 'a'..'z' || initial in 'A'..'Z') {
                 binding.profileImg.text = "${item.sender.toCharArray()[0]}"
                 binding.profileImg.setBackgroundResource(R.drawable.circle_shape)
-            }else{
+            }else if(initial in '가'..'힣'){
                 binding.profileImg.text = ""
                 binding.profileImg.setBackgroundResource(R.drawable.ic_baseline_account_circle_24)
             }
@@ -40,10 +36,34 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
         }
     }
 
+    class DiffUtilCallBack(
+        private val oldList : List<Mail>,
+        private val newList : List<Mail>
+    ):DiffUtil.Callback(){
+        override fun getOldListSize(): Int = oldList.size
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return  oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return  oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
+
+    private val mailList = mutableListOf<Mail>()
+
     fun updateList(mails : List<Mail>){
-        mailList.clear()
+        /*mailList.clear()
         mailList.addAll(mails)
-        notifyDataSetChanged()
+        notifyDataSetChanged()*/
+        val diffUtilCallBack = DiffUtilCallBack(mailList,mails)
+        val diffResult = DiffUtil.calculateDiff(diffUtilCallBack)
+        mailList.run {
+            clear()
+            addAll(mails)
+            diffResult.dispatchUpdatesTo(this@MailAdapter)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MailItemViewHolder {

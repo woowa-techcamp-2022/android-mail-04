@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
     <item
         android:id="@+id/item_primary"
-        android:title="Primary"
+        android:title="@string/primary"
+        android:checked="true"
         android:icon="@drawable/ic_baseline_priority_high_30"/>
     <item
         android:id="@+id/item_social"
-        android:title="Social"
+        android:title="@string/social"
         android:icon="@drawable/ic_baseline_supervisor_account_30"/>
     <item
         android:id="@+id/item_promotions"
-        android:title="Promotions"
+        android:title="@string/promotions"
         android:icon="@drawable/ic_outline_label_30"/>
+    </group>
 </menu>

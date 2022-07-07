@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -144,10 +145,14 @@ class MainActivity : AppCompatActivity() {
             finish()
         }else {
             viewModel.navPosition.value = R.id.item_mail
-            viewModel.drawerNavPosition = 0
-            viewModel.getMails()
-            mailAdapter.updateList(viewModel.mails)
+            if (viewModel.drawerNavPosition != 0){
+                viewModel.drawerNavPosition = 0
+                viewModel.getMails()
+                mailAdapter.updateList(viewModel.mails)
+                binding.drawerNavView.setCheckedItem(R.id.item_primary)
+            }
             lastTimeBackPressed = System.currentTimeMillis()
+            Toast.makeText(this,"뒤로가기를 한 번 더 눌려 종료합니다.",Toast.LENGTH_SHORT).show()
         }
     }
 }

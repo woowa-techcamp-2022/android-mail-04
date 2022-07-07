@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Email</string>
     <string name="title">W mail</string>
+    <string name="primary">Primary</string>
+    <string name="social">Social</string>
+    <string name="promotions">Promotions</string>
+    <string name="mail">Mail</string>
+    <string name="setting">Setting</string>
+    <string name="email_ko">이메일</string>
+    <string name="next_btn_text">next</string>
+    <string name="nickName_ko">닉네임</string>
 </resources>

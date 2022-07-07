@@ -9,14 +9,17 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.email.R
 import com.example.email.databinding.ActivitySignInBinding
 import com.example.email.viewmodels.SignInViewModel
+import java.lang.ref.WeakReference
 
-class SignInActivity : AppCompatActivity() {
+class SignInActivity : AppCompatActivity(), SignInNavigator{
 
     private val binding by lazy {
         DataBindingUtil.setContentView<ActivitySignInBinding>(this, R.layout.activity_sign_in)
     }
     private val viewModel by lazy {
-        ViewModelProvider(this)[SignInViewModel::class.java]
+        ViewModelProvider(this)[SignInViewModel::class.java].also {
+            it.navigatorRef = WeakReference(this)
+        }
     }
     private var emailCheck = false
     private var nicknameCheck = false
@@ -29,11 +32,6 @@ class SignInActivity : AppCompatActivity() {
         configurationCheck()
         nickNameObserve()
         emailObserve()
-
-        binding.nextButton.setOnClickListener {
-            startActivity(MainActivity.getInstance(this,viewModel.nickname.value!!,viewModel.email.value!!))
-            finish()
-        }
     }
 
     private fun configurationCheck(){
@@ -52,7 +50,7 @@ class SignInActivity : AppCompatActivity() {
                 binding.nicknameTextInputLayout.error = ""
                 binding.nextButton.isEnabled = false
                 nicknameCheck = false
-            }else if(it.matches("^[a-z][a-z\\d]{4,12}\$".toRegex())){
+            }else if(it.matches("^[a-z][a-z\\d]{3,11}\$".toRegex())){
                 binding.nicknameTextInputLayout.error = ""
                 nicknameCheck = true
                 if (emailCheck) binding.nextButton.isEnabled= true
@@ -81,6 +79,11 @@ class SignInActivity : AppCompatActivity() {
                 emailCheck = false
             }
         }
+    }
+
+    override fun startMainActivity(nickName : String, email : String) {
+        startActivity(MainActivity.getInstance(this,viewModel.nickname.value!!,viewModel.email.value!!))
+        finish()
     }
 
 }
