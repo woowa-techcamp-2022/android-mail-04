@@ -38,12 +38,15 @@ class MainActivity : AppCompatActivity() {
             val frameId = binding.fragmentFrame.id
             when(item.itemId){
                 R.id.item_mail -> {
-                    viewModel.navPosition.postValue(R.id.item_mail)
+                    if (viewModel.navPosition.value!! != item.itemId)
+                        viewModel.navPosition.postValue(R.id.item_mail)
                     binding.typeTextView.visibility = View.VISIBLE
                     binding.mailRecyclerView.visibility = View.VISIBLE
                     ft.remove(settingFrag)
                 }
                 R.id.item_setting -> {
+                    if (viewModel.navPosition.value!! != item.itemId)
+                        viewModel.navPosition.postValue(R.id.item_mail)
                     viewModel.navPosition.postValue(R.id.item_setting)
                     binding.typeTextView.visibility = View.GONE
                     binding.mailRecyclerView.visibility = View.GONE
@@ -117,6 +120,7 @@ class MainActivity : AppCompatActivity() {
             }
             viewModel.getMails()
             mailAdapter.updateList(viewModel.mails)
+            viewModel.navPosition.postValue(R.id.item_mail)
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
         }
@@ -144,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         if (System.currentTimeMillis() - lastTimeBackPressed < 1500L){
             finish()
         }else {
-            viewModel.navPosition.value = R.id.item_mail
+            viewModel.navPosition.postValue(R.id.item_mail)
             if (viewModel.drawerNavPosition != 0){
                 viewModel.drawerNavPosition = 0
                 viewModel.getMails()
