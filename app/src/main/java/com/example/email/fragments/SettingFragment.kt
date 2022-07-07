@@ -12,10 +12,10 @@ import com.example.email.activities.MainActivity
 import com.example.email.databinding.FragmentSettingBinding
 import com.example.email.viewmodels.SettingViewModel
 
-
 class SettingFragment : Fragment() {
 
     private lateinit var binding : FragmentSettingBinding
+
     private val viewModel by lazy {
         ViewModelProvider(this)[SettingViewModel::class.java]
     }
