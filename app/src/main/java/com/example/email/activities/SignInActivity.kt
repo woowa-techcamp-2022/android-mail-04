@@ -80,15 +80,15 @@ class SignInActivity : AppCompatActivity(), SignInNavigator {
     private fun nickNameObserve(){
         viewModel.nickname.observe(this){
             if (it.isEmpty()){
-                binding.nicknameTextInputLayout.error = ""
+                binding.nicknameTextInputLayout.error = null
                 binding.nextButton.isEnabled = false
                 nicknameCheck = false
             }else if(nickNameChecker(it)){
-                binding.nicknameTextInputLayout.error = ""
+                binding.nicknameTextInputLayout.error = null
                 nicknameCheck = true
                 if (emailCheck) binding.nextButton.isEnabled= true
             }else{
-                binding.nicknameTextInputLayout.error = "닉네임은 영문과 숫자를 포함한 4 ~ 12자로 입력하세요."
+                binding.nicknameTextInputLayout.error = this.getString(R.string.nickName_input_error_msg)
                 binding.nextButton.isEnabled = false
                 nicknameCheck = false
             }
@@ -129,15 +129,15 @@ class SignInActivity : AppCompatActivity(), SignInNavigator {
         viewModel.email.observe(this){
             val pattern = android.util.Patterns.EMAIL_ADDRESS
             if (it.isEmpty()){
-                binding.emailTextInputLayout.error = ""
+                binding.emailTextInputLayout.error = null
                 binding.nextButton.isEnabled = false
                 emailCheck = false
             }else if (pattern.matcher(it).matches()){
-                binding.emailTextInputLayout.error = ""
+                binding.emailTextInputLayout.error = null
                 emailCheck = true
                 if (nicknameCheck) binding.nextButton.isEnabled = true
             }else{
-                binding.emailTextInputLayout.error = "이메일의 양식이 아닙니다."
+                binding.emailTextInputLayout.error = this.getString(R.string.email_input_error_msg)
                 binding.nextButton.isEnabled = false
                 emailCheck = false
             }

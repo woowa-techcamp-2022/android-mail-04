@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity() {
     /**
      * 전환할 fragments
      */
-    private val settingFrag  = SettingFragment.newInstance()
-    private val mailFrag  = MailFragment.newInstance()
+    private val settingFrag  = SettingFragment()
+    private val mailFrag  = MailFragment()
 
     /**
      * binding, 호출 시 초기화
@@ -92,6 +92,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
+
         configurationCheck()
         initToolBar()
         initNavi()

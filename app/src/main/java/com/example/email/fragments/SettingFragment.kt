@@ -49,10 +49,4 @@ class SettingFragment : Fragment() {
         viewModel.nicknameText.value = "NickName : ${MainActivity.nickName }"
     }
 
-    /**
-     * instance 생성
-     */
-    companion object {
-        fun newInstance() = SettingFragment()
-    }
 }
