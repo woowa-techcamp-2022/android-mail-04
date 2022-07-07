@@ -37,8 +37,8 @@ class SettingFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        viewModel.emailText.postValue("Email : ${MainActivity.email}")
-        viewModel.nicknameText.postValue("NickName : ${MainActivity.nickName }")
+        viewModel.emailText.value = "Email : ${MainActivity.email}"
+        viewModel.nicknameText.value = "NickName : ${MainActivity.nickName }"
     }
 
     companion object {
