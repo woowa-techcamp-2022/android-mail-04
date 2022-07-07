@@ -23,6 +23,7 @@
             android:layout_margin="50dp"
             >
             <ImageView
+                android:contentDescription="@null"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_baseline_edit_50"/>
@@ -77,6 +78,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="50dp"
             android:enabled="false"
-            android:text="@string/next_btn_text"/>
+            android:text="@string/next_btn_text"
+            android:onClick="@{(v) -> viewModel.startMain()}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
