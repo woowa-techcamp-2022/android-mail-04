@@ -52,6 +52,7 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
         }
     }
 
+    /*
     /**
      * 이전 목록과 새로 업데이트된 목록을 비교하여 알맞은 Notify 함수를 실행시키기 위한 DiffUtil.Callback
      */
@@ -68,7 +69,7 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return  oldList[oldItemPosition] == newList[newItemPosition]
         }
-    }
+    }*/
 
     /**
      * recyclerView 에 실질적으로 출력될 메일 목록
@@ -78,15 +79,21 @@ class MailAdapter : RecyclerView.Adapter<MailAdapter.MailItemViewHolder>() {
     /**
      * 메일 목록 업데이트 함수 DiffUtilCallBack 을 이용해
      * 목록의 변화를 확인하고 View 를 업데이트한다.
+     *
+     * 변경
+     * 메일 목록 업데이트와 그에 따른 View 업데이트
      */
     fun updateList(mails : List<Mail>){
-        val diffUtilCallBack = DiffUtilCallBack(mailList,mails)
+        /*val diffUtilCallBack = DiffUtilCallBack(mailList,mails)
         val diffResult = DiffUtil.calculateDiff(diffUtilCallBack)
         mailList.run {
             clear()
             addAll(mails)
             diffResult.dispatchUpdatesTo(this@MailAdapter)
-        }
+        }*/
+        mailList.clear()
+        mailList.addAll(mails)
+        notifyItemRangeChanged(0,itemCount)
     }
 
     /**
