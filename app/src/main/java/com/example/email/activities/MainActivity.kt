@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity() {
             when(item.itemId){
                 R.id.item_mail -> {
                     if (viewModel.navPosition.value!! != item.itemId) {
-                        viewModel.navPosition.postValue(R.id.item_mail)
+                        viewModel.navPosition.value = R.id.item_mail
                         ft.replace(frameId, mailFrag)
                     }
                     if(ft.isEmpty)
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.item_setting -> {
                     if (viewModel.navPosition.value!! != item.itemId) {
-                        viewModel.navPosition.postValue(R.id.item_setting)
+                        viewModel.navPosition.value = R.id.item_setting
                         ft.replace(frameId, settingFrag)
                     }
                 }
@@ -155,11 +155,11 @@ class MainActivity : AppCompatActivity() {
 
         binding.drawerNavView.setNavigationItemSelectedListener{
             when(it.itemId){
-                R.id.item_primary -> App.mailType.postValue(0)
-                R.id.item_social -> App.mailType.postValue(1)
-                R.id.item_promotions -> App.mailType.postValue(2)
+                R.id.item_primary -> App.mailType.value = 0
+                R.id.item_social -> App.mailType.value = 1
+                R.id.item_promotions -> App.mailType.value = 2
             }
-            viewModel.navPosition.postValue(R.id.item_mail)
+            viewModel.navPosition.value = R.id.item_mail
             binding.drawerLayout.closeDrawer(GravityCompat.START)
             return@setNavigationItemSelectedListener true
         }
