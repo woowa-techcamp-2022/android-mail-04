@@ -27,25 +27,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:title="@string/title"/>
-            <!--<TextView
-                android:id="@+id/type_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="@{viewModel.typeText,default=Primary}"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@id/side_nav"
-                app:layout_constraintTop_toBottomOf="@id/toolbar"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/mail_recyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                app:layout_constraintStart_toEndOf="@id/side_nav"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/type_textView"
-                app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-                tools:listitem="@layout/mail_item"/>-->
             <FrameLayout
                 android:id="@+id/fragment_frame"
                 android:layout_width="0dp"
@@ -62,6 +43,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:itemTextColor="@drawable/nav_item_color"
+                app:itemIconTint="@drawable/nav_item_color"
                 app:menu="@menu/nav_menu"/>
 
             <com.google.android.material.navigationrail.NavigationRailView
@@ -71,6 +54,8 @@
                 android:layout_height="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:itemTextColor="@drawable/nav_item_color"
+                app:itemIconTint="@drawable/nav_item_color"
                 app:menu="@menu/nav_menu"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
         <com.google.android.material.navigation.NavigationView
